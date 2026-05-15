@@ -36,9 +36,6 @@ jobs:
       - name: Build APK
         run: |
           rm -rf ~/.gradle/caches/
-          cd android/
-          ./gradlew clean --no-build-cache
-          cd ..
           flutter build apk --debug --target-platform android-arm64 --no-tree-shake-icons
 
       - name: Save APK to Artifacts
