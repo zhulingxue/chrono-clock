@@ -30,11 +30,6 @@ jobs:
       - name: Turn off analytics
         run: flutter config --no-analytics
 
-      - name: Clean
-        run: |
-          flutter clean
-          ./gradlew clean
-      
       - name: Pub Get Packages
         run: flutter pub get
 
