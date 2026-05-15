@@ -33,7 +33,6 @@ jobs:
       - name: Clean
         run: |
           flutter clean
-          cd android
           ./gradlew clean
       
       - name: Pub Get Packages
