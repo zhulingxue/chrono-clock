@@ -229,13 +229,13 @@ void stopAlarm(int scheduleId, AlarmStopAction action) async {
           }
         }
       }
-      await alarm.handleDismiss();
+      alarm.handleDismiss();
     });
   } else if (action == AlarmStopAction.skip) {
     // Skip this occurrence - just reschedule for next regular time
     logger.i("[stopAlarm] Skipping alarm $scheduleId");
     await updateAlarmById(scheduleId, (alarm) async {
-      await alarm.handleDismiss();
+      alarm.handleDismiss();
     });
   }
   RingingManager.stopAlarm();
