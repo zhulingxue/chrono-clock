@@ -1,4 +1,4 @@
-﻿name: Android Build
+name: Android Build
 
 on:
   push:
@@ -34,7 +34,12 @@ jobs:
         run: flutter pub get
 
       - name: Build APK
-        run: flutter build apk --debug --target-platform android-arm64 --no-tree-shake-icons
+        run: |
+          rm -rf ~/.gradle/caches/
+          cd android/
+          ./gradlew clean --no-build-cache
+          cd ..
+          flutter build apk --debug --target-platform android-arm64 --no-tree-shake-icons
 
       - name: Save APK to Artifacts
         uses: actions/upload-artifact@v4
