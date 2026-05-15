@@ -1,4 +1,4 @@
-name: Android Build
+﻿name: Android Build
 
 on:
   push:
@@ -23,7 +23,7 @@ jobs:
 
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: "3.24.5"
+          flutter-version: "3.22.2"
           channel: 'stable'
           cache: true
 
@@ -33,15 +33,8 @@ jobs:
       - name: Pub Get Packages
         run: flutter pub get
 
-      - name: Clean Gradle cache
-        run: |
-          rm -rf ~/.gradle/caches/
-          rm -rf build/
-          cd android
-          rm -rf .gradle/
-      
       - name: Build APK
-        run: flutter build apk --debug --target-platform android-arm64
+        run: flutter build apk --debug --target-platform android-arm64 --no-tree-shake-icons
 
       - name: Save APK to Artifacts
         uses: actions/upload-artifact@v4
