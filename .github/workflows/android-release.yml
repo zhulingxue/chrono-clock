@@ -73,7 +73,7 @@ jobs:
                   "labels": ["feature"]
                 },
                 {
-                  "enhancements": "## âœ¨ Enhancements"
+                  "enhancements": "## âœ?Enhancements"
                   "labels": ["enhancement"]
                 },
                 {
