@@ -33,6 +33,13 @@ jobs:
       - name: Pub Get Packages
         run: flutter pub get
 
+      - name: Clean Gradle cache
+        run: |
+          rm -rf ~/.gradle/caches/
+          rm -rf build/
+          cd android
+          rm -rf .gradle/
+      
       - name: Build APK
         run: flutter build apk --debug --target-platform android-arm64
 
