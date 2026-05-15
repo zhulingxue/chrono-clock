@@ -157,6 +157,7 @@ Future<void> dismissAlarmNotification(int scheduleId,
       await updateAlarmById(scheduleId, (alarm) async {
         alarm.setShouldSkip(true);
       });
+      await stopAlarm(scheduleId, type, AlarmStopAction.skip);
       break;
     case AlarmDismissType.snooze:
       await snoozeAlarm(scheduleId, type);

@@ -12,6 +12,7 @@ import 'package:clock_app/alarm/widgets/try_alarm_task_button.dart';
 import 'package:clock_app/audio/audio_channels.dart';
 import 'package:clock_app/audio/screens/ringtones_screen.dart';
 import 'package:clock_app/audio/types/ringtone_player.dart';
+import 'package:clock_app/timer/types/time_duration.dart';
 import 'package:clock_app/common/data/weekdays.dart';
 import 'package:clock_app/common/logic/tags.dart';
 import 'package:clock_app/common/types/file_item.dart';
@@ -236,6 +237,32 @@ SettingGroup alarmSettingsSchema = SettingGroup(
         "Melody",
         "Vibration",
       ],
+    ),
+    SettingGroup(
+      "Alarm Repeat",
+      (context) => "响铃重复",
+      [
+        DurationSetting(
+            "Ring Duration",
+            (context) => "每次响铃时长",
+            const TimeDuration(minutes: 1),
+            getDescription: (context) => "响铃持续多长时间后停止"),
+        DurationSetting(
+            "Repeat Interval",
+            (context) => "间隔时间",
+            const TimeDuration(minutes: 5),
+            getDescription: (context) => "两次响铃之间的间隔时间"),
+        SliderSetting(
+            "Repeat Count",
+            (context) => "重复次数",
+            1,
+            10,
+            3,
+            unit: "次",
+            snapLength: 1,
+            getDescription: (context) => "总共响铃的次数（含第一次）"),
+      ],
+      icon: Icons.repeat,
     ),
     SettingGroup(
       "Snooze",

@@ -158,6 +158,16 @@ void triggerAlarm(int scheduleId, Json params) async {
     setVolume(message[0]);
   });
 
+  // Auto-stop alarm after ring duration
+  int ringDurationSeconds = alarm.settings.getSetting("Ring Duration").value.inSeconds;
+  if (ringDurationSeconds > 0) {
+    Future.delayed(Duration(seconds: ringDurationSeconds), () {
+      if (RingingManager.isAlarmRinging && RingingManager.ringingAlarmId == scheduleId) {
+        RingtonePlayer.stop();
+      }
+    });
+  }
+
   String timeFormatString = await loadTextFile("time_format_string");
   String title = alarm.label.isEmpty ? "Alarm Ringing..." : alarm.label;
 
@@ -191,7 +201,42 @@ void stopAlarm(int scheduleId, AlarmStopAction action) async {
         RingtonePlayer.playTimer(timer);
       }
     }
-    await updateAlarmById(scheduleId, (alarm) async => alarm.handleDismiss());
+    await updateAlarmById(scheduleId, (alarm) async {
+      // Check if we need to reschedule for repeat
+      Alarm? currentAlarm = getAlarmById(scheduleId);
+      if (currentAlarm != null) {
+        // Check and decrement repeat count
+        if (currentAlarm.repeatRemaining <= 0) {
+          int totalRepeats = currentAlarm.settings.getSetting("Repeat Count").value.floor();
+          currentAlarm.repeatRemaining = totalRepeats - 1; // First ring already happened
+        }
+        if (currentAlarm.repeatRemaining > 0) {
+          int repeatIntervalSeconds = currentAlarm.settings.getSetting("Repeat Interval").value.inSeconds;
+          if (repeatIntervalSeconds > 0) {
+            currentAlarm.repeatRemaining--;
+            DateTime nextRing = DateTime.now().add(Duration(seconds: repeatIntervalSeconds));
+            try {
+              await scheduleAlarm(
+                scheduleId,
+                nextRing,
+                "${alarm.label} (repeat)",
+                type: ScheduledNotificationType.alarm,
+                alarmClock: true,
+              );
+            } catch (e) {
+              logger.e("Failed to schedule repeat alarm: $e");
+            }
+          }
+        }
+      }
+      await alarm.handleDismiss();
+    });
+  } else if (action == AlarmStopAction.skip) {
+    // Skip this occurrence - just reschedule for next regular time
+    logger.i("[stopAlarm] Skipping alarm $scheduleId");
+    await updateAlarmById(scheduleId, (alarm) async {
+      await alarm.handleDismiss();
+    });
   }
   RingingManager.stopAlarm();
 }

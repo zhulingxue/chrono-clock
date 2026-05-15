@@ -161,6 +161,10 @@ SettingGroup generalSettingsSchema = SettingGroup(
         SelectSetting("Time Picker",
             (context) => AppLocalizations.of(context)!.timePickerSetting, [
           SelectSettingOption(
+            (context) => AppLocalizations.of(context)!.pickerSpinner,
+            TimePickerType.spinner,
+          ),
+          SelectSettingOption(
             (context) => AppLocalizations.of(context)!.pickerDial,
             TimePickerType.dial,
           ),
@@ -168,17 +172,13 @@ SettingGroup generalSettingsSchema = SettingGroup(
             (context) => AppLocalizations.of(context)!.pickerInput,
             TimePickerType.input,
           ),
-          SelectSettingOption(
-            (context) => AppLocalizations.of(context)!.pickerSpinner,
-            TimePickerType.spinner,
-          ),
         ],
             searchTags: [
               "time",
               "picker",
+              "spinner",
               "dial",
               "input",
-              "spinner",
             ]),
         SelectSetting("Duration Picker",
             (context) => AppLocalizations.of(context)!.durationPickerSetting, [

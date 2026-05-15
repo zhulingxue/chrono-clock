@@ -127,6 +127,7 @@ Future<void> cancelAlarm(int scheduleId, ScheduledNotificationType type) async {
 enum AlarmStopAction {
   dismiss,
   snooze,
+  skip,
 }
 
 Future<void> scheduleSnoozeAlarm(int scheduleId, Duration delay,

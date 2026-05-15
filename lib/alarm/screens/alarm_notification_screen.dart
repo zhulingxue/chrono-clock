@@ -100,6 +100,11 @@ class _AlarmNotificationScreenState extends State<AlarmNotificationScreen> {
         ScheduledNotificationType.alarm);
   }
 
+  void _skipAlarm() {
+    dismissAlarmNotification(widget.scheduleId, AlarmDismissType.skip,
+        ScheduledNotificationType.alarm);
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -143,6 +148,15 @@ class _AlarmNotificationScreenState extends State<AlarmNotificationScreen> {
                             "Alarm",
                             style: Theme.of(context).textTheme.headlineMedium,
                           ),
+                          const SizedBox(height: 12),
+                          TextButton.icon(
+                            onPressed: _skipAlarm,
+                            icon: const Icon(Icons.skip_next),
+                            label: const Text("Ìø¹ý±¾´Î"),
+                            style: TextButton.styleFrom(
+                              foregroundColor: Colors.white70,
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -156,11 +170,6 @@ class _AlarmNotificationScreenState extends State<AlarmNotificationScreen> {
                     ],
                   ),
                 ),
-                // if (!alarm.maxSnoozeIsReached)
-                //   TextButton(
-                //     onPressed: _snoozeAlarm,
-                //     child: const Text("Snooze"),
-                //   ),
               ],
             ),
           ),

@@ -43,6 +43,9 @@ class Alarm extends CustomizableListItem {
   // bool _isFinished = false;
   DateTime? _snoozeTime;
   int _snoozeCount = 0;
+  int _repeatRemaining = 0;
+  int get repeatRemaining => _repeatRemaining;
+  set repeatRemaining(int value) { _repeatRemaining = value; }
   DateTime? _skippedTime;
   SettingGroup _settings = SettingGroup(
     "Alarm Settings",
